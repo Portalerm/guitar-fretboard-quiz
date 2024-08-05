@@ -21,7 +21,7 @@ const instrumentTuningPresets = {
 let allNotes;
 let showMultipleNotes = false;
 let showAllNotes = false;
-let numberOfFrets = 20;
+let numberOfFrets = 12;
 let accidentals = 'flats';
 let selectedInstrument = 'Guitar';
 let numberOfStrings = instrumentTuningPresets[selectedInstrument].length;

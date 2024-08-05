@@ -81,7 +81,8 @@ label {
     border-image: linear-gradient(to left, #bbb, #fff, #bbb) 1 100%;
 }
 .note-fret:before {
-    content: attr(data-note);
+    /* content: attr(data-note); */
+    content: '';
     width: 33px;
     height: 33px;
     border-radius: 50%;
