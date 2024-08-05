@@ -21,11 +21,27 @@
         <label for="number-of-frets">Number of frets: </label>
         <input type="number" id="number-of-frets" min="5" max="30" value="12">
 
-        <label for="set-naturals">Naturals Only</label>
-        <input type="radio" name="note-set" id="set-naturals" value="naturals">
-        
-        <label for="set-naturals">Chromatic</label>
-        <input type="radio" name="note-set" id="set-chromatic" value="chromatic">
+        <div class="note-set-selector">
+            <div class="radio-button-pair">
+                <input type="radio" name="note-set" id="set-naturals" value="naturals" checked>
+                <label for="set-naturals">Naturals Only</label>
+            </div>
+            <div class="radio-button-pair">
+            <input type="radio" name="note-set" id="set-chromatic" value="chromatic">
+            <label for="set-naturals">Chromatic</label>
+            </div>
+        </div>
+
+        <div class="gamemode-selector">
+            <div class="radio-button-pair">
+                <input type="radio" name="gamemode" id="gamemode-fret" value="fret" checked>
+                <label for="gamemode-fret">Guess Fret</label>
+            </div>
+            <div class="radio-button-pair">
+                <input type="radio" name="gamemode" id="gamemode-note" value="note">
+                <label for="gamemode-note">Guess Note</label>
+            </div>
+        </div>
 
     </div>
     <div class="fretboard">

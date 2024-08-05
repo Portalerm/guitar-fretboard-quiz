@@ -22,13 +22,32 @@ body {
 }
 .settings {
     display: flex;
+    justify-content: center;
+    align-items: center;
     color: #fff;
     padding: 20px;
     border-bottom: 1px solid #444;
     background: #282828;
 }
+.radio-button-pair {
+    display: flex;
+    flex-direction: row;
+}
 .accidental-selector {
     margin-left: 20px;
+}
+
+.note-set-selector {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.gamemode-selector {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {  

@@ -6,6 +6,8 @@ const accidentalSelector = document.querySelector('.accidental-selector');
 const numberOfFretsSelector = document.querySelector('#number-of-frets');
 const showAllNotesSelector = document.querySelector('#show-all-notes');
 const showMultipleNotesSelector = document.querySelector('#show-multiple-notes');
+const noteSetSelector = document.querySelector('.note-set-selector');
+const gamemodeSelector = document.querySelector('.gamemode-selector');
 const noteNameSection = document.querySelector('.note-name-section');
 const singleFretMarkPositions = [3, 5, 7, 9, 15, 17, 19, 21];
 const doubleFretMarkPositions = [12, 24];
@@ -32,6 +34,8 @@ let numberOfFrets = 12;
 let accidentals = 'flats';
 let selectedInstrument = 'Guitar';
 let numberOfStrings = instrumentTuningPresets[selectedInstrument].length;
+let gamemode = 'fret';
+let noteSet = 'naturals';
 
 const app = {
     init() {
@@ -202,10 +206,6 @@ const handlers = {
         showAllNotesSelector.addEventListener('change', this.setShowAllNotes);
         showMultipleNotesSelector.addEventListener('change', this.setShowMultipleNotes);
         noteNameSection.addEventListener('click', this.testCorrectNote);
-        /* 
-        noteNameSection.addEventListener('mouseover', this.setNotesToShow);
-        noteNameSection.addEventListener('mouseout', this.setNotesToHide);
-        */
     }
 }
 
