@@ -202,8 +202,10 @@ const handlers = {
         showAllNotesSelector.addEventListener('change', this.setShowAllNotes);
         showMultipleNotesSelector.addEventListener('change', this.setShowMultipleNotes);
         noteNameSection.addEventListener('click', this.testCorrectNote);
+        /* 
         noteNameSection.addEventListener('mouseover', this.setNotesToShow);
         noteNameSection.addEventListener('mouseout', this.setNotesToHide);
+        */
     }
 }
 
