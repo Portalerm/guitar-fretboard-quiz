@@ -36,6 +36,11 @@ let selectedInstrument = 'Guitar';
 let numberOfStrings = instrumentTuningPresets[selectedInstrument].length;
 let gamemode = 'fret';
 let noteSet = 'naturals';
+let gameState = {
+    inPlay : false,
+    selectedString : '',
+    selectedNote : '',
+}
 
 const app = {
     init() {
@@ -192,19 +197,6 @@ const handlers = {
         numberOfFrets = numberOfFretsSelector.value;
         app.setupFretboard();
     },
-    setShowAllNotes() {
-        showAllNotes = showAllNotesSelector.checked;
-        if (showAllNotes) {
-            root.style.setProperty('--noteDotOpacity', 1);
-            app.setupFretboard();
-        } else {
-            root.style.setProperty('--noteDotOpacity', 0);
-            app.setupFretboard();
-        }
-    },
-    setShowMultipleNotes() {
-        showMultipleNotes = !showMultipleNotes;
-    },
     setNotesToShow(event) {
         let noteToShow = event.target.innerText;
         app.toggleMultipleNotes(noteToShow, 1);
@@ -232,14 +224,16 @@ const handlers = {
     },
     promptQuestion(event) {
         if(event.code != "Space") return;
+        gameState.inPlay = true;
         if(gamemode === 'fret') {
             // get the current valid strings we can choose from and select a random string
             let stringSelection = Array.from(stringSelector.querySelectorAll('input'));
             stringSelection = stringSelection.filter((box) => box.checked);
             stringSelection = stringSelection.map((box) => box.value);
-            let selectedString = stringSelection[Math.floor(Math.random() * stringSelection.length)];
+            gameState.selectedString = stringSelection[Math.floor(Math.random() * stringSelection.length)];
 
-            if(selectedString === undefined) {
+            if(gameState.selectedString === undefined) {
+                gameState.inPlay = false;
                 gamePrompt.innerText = 'You must have at least 1 string selected';
                 return; 
             }
@@ -248,14 +242,14 @@ const handlers = {
             // if the gamemode is set to naturals only, make sure it's only naturals
             let selectedNote = '';
             if(noteSet === 'naturals') {
-                selectedNote = notesNatural[Math.floor(Math.random() * notesNatural.length)];
+                gameState.selectedNote = notesNatural[Math.floor(Math.random() * notesNatural.length)];
             }
             else if (noteSet === 'chromatic') {
-                selectedNote = Math.floor(Math.random() * notesFlat.length);
-                selectedNote = app.generateNoteNames(selectedNote, accidentals);
+                gameState.selectedNote = Math.floor(Math.random() * notesFlat.length);
+                gameState.selectedNote = app.generateNoteNames(gameState.selectedNote, accidentals);
             }
 
-            gamePrompt.innerText = `Where is ${selectedNote} on the ${selectedString} string?`;
+            gamePrompt.innerText = `Where is ${gameState.selectedNote} on the ${gameState.selectedString} string?`;
 
         }
         else if(gamemode === 'note') {
