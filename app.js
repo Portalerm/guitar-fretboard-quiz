@@ -4,11 +4,10 @@ const fretboard = document.querySelector('.fretboard');
 const instrumentSelector = document.querySelector('#instrument-selector');
 const accidentalSelector = document.querySelector('.accidental-selector');
 const numberOfFretsSelector = document.querySelector('#number-of-frets');
-const showAllNotesSelector = document.querySelector('#show-all-notes');
-const showMultipleNotesSelector = document.querySelector('#show-multiple-notes');
 const noteSetSelector = document.querySelector('.note-set-selector');
 const gamemodeSelector = document.querySelector('.gamemode-selector');
 const noteNameSection = document.querySelector('.note-name-section');
+const stringSelector = document.querySelector('#string-selector')
 const singleFretMarkPositions = [3, 5, 7, 9, 15, 17, 19, 21];
 const doubleFretMarkPositions = [12, 24];
 const notesFlat = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
@@ -26,7 +25,6 @@ const instrumentTuningPresets = {
     'Bass (5 strings)': [7, 2, 9, 4, 11],
     'Ukulele': [9, 4, 0, 7]
 };
-
 let allNotes;
 let showMultipleNotes = false;
 let showAllNotes = false;
@@ -42,6 +40,7 @@ const app = {
      this.setupFretboard();
      this.setupinstrumentSelector();
      this.setupNoteNameSection();
+     this.setupStringSelection();
      handlers.setupEventListeners();
     },
     setupFretboard() {
@@ -112,6 +111,28 @@ const app = {
                 allNotes[i].style.setProperty('--noteDotOpacity', opacity);
             }
         }
+    },
+    setupStringSelection() {
+        stringSelector.innerHTML = '';
+        let strings = instrumentTuningPresets[selectedInstrument].map((x) => x);
+        strings.reverse();
+
+        for(let i = 0; i < strings.length; ++i) {
+            let stringName = notesSharp[strings[i]];
+            let label = tools.createElement('label', stringName);
+            label.setAttribute('for', `string-select-${stringName}`);
+            stringSelector.appendChild(label);
+            let checkBox = tools.createElement('input');
+            checkBox.setAttribute('type', 'checkbox');
+            checkBox.setAttribute('id', `string-select-${stringName}`);
+            checkBox.setAttribute('value', stringName);
+            stringSelector.appendChild(checkBox);
+        }
+
+
+    },
+    promptQuestion() {
+        // depending on which game it is, setup the round
     }
 }
 
@@ -144,6 +165,7 @@ const handlers = {
         selectedInstrument = event.target.value;
         numberOfStrings = instrumentTuningPresets[selectedInstrument].length;
         app.setupFretboard();
+        app.setupStringSelection();
     },
     setAccidentals(event) {
         if (event.target.classList.contains('acc-select')) {
@@ -203,8 +225,6 @@ const handlers = {
         instrumentSelector.addEventListener('change', this.setSelectedInstrument);
         accidentalSelector.addEventListener('click', this.setAccidentals);
         numberOfFretsSelector.addEventListener('change', this.setNumberOfFrets);
-        showAllNotesSelector.addEventListener('change', this.setShowAllNotes);
-        showMultipleNotesSelector.addEventListener('change', this.setShowMultipleNotes);
         noteNameSection.addEventListener('click', this.testCorrectNote);
     }
 }
