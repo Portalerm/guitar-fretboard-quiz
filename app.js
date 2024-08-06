@@ -7,11 +7,13 @@ const numberOfFretsSelector = document.querySelector('#number-of-frets');
 const noteSetSelector = document.querySelector('.note-set-selector');
 const gamemodeSelector = document.querySelector('.gamemode-selector');
 const noteNameSection = document.querySelector('.note-name-section');
-const stringSelector = document.querySelector('#string-selector')
+const stringSelector = document.querySelector('#string-selector');
+const gamePrompt = document.querySelector('.game-prompt h1');
 const singleFretMarkPositions = [3, 5, 7, 9, 15, 17, 19, 21];
 const doubleFretMarkPositions = [12, 24];
 const notesFlat = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
 const notesSharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+const notesNatural = ["C", "D", "E", "F", "G", "A", "B"];
 const enumeratedNotes = new Map([
     ["C", 0], ["C#", 1], ["Db", 1], ["D", 2],
     ["D#", 3], ["Eb", 3], ["E", 4], ["F", 5],
@@ -118,7 +120,7 @@ const app = {
         strings.reverse();
 
         for(let i = 0; i < strings.length; ++i) {
-            let stringName = notesSharp[strings[i]];
+            let stringName = this.generateNoteNames(strings[i], accidentals);
             let label = tools.createElement('label', stringName);
             label.setAttribute('for', `string-select-${stringName}`);
             stringSelector.appendChild(label);
@@ -231,7 +233,30 @@ const handlers = {
     promptQuestion(event) {
         if(event.code != "Space") return;
         if(gamemode === 'fret') {
-            // code for fret game
+            // get the current valid strings we can choose from and select a random string
+            let stringSelection = Array.from(stringSelector.querySelectorAll('input'));
+            stringSelection = stringSelection.filter((box) => box.checked);
+            stringSelection = stringSelection.map((box) => box.value);
+            let selectedString = stringSelection[Math.floor(Math.random() * stringSelection.length)];
+
+            if(selectedString === undefined) {
+                gamePrompt.innerText = 'You must have at least 1 string selected';
+                return; 
+            }
+
+            // select a random note
+            // if the gamemode is set to naturals only, make sure it's only naturals
+            let selectedNote = '';
+            if(noteSet === 'naturals') {
+                selectedNote = notesNatural[Math.floor(Math.random() * notesNatural.length)];
+            }
+            else if (noteSet === 'chromatic') {
+                selectedNote = Math.floor(Math.random() * notesFlat.length);
+                selectedNote = app.generateNoteNames(selectedNote, accidentals);
+            }
+
+            gamePrompt.innerText = `Where is ${selectedNote} on the ${selectedString} string?`;
+
         }
         else if(gamemode === 'note') {
             // code for note game
@@ -251,7 +276,6 @@ const handlers = {
     }
 }
 
-
 const tools = {
     createElement(element, content) {
         element = document.createElement(element);
@@ -261,7 +285,6 @@ const tools = {
         return element;
     }
 }
-
 
 app.init();
 })();
