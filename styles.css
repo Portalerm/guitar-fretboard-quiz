@@ -56,6 +56,13 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 label {
     margin: 0 10px;
 }
+.game-prompt {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    align-items: center;
+    margin-top: 25px;
+}
 .fretboard {
     display: flex;
     flex-direction: column;

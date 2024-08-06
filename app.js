@@ -131,9 +131,6 @@ const app = {
         }
 
 
-    },
-    promptQuestion() {
-        // depending on which game it is, setup the round
     }
 }
 
@@ -177,6 +174,18 @@ const handlers = {
             return;
         }
     },
+    setGamemode(event) {
+        if(event.target.getAttribute('name') === 'gamemode') {
+            gamemode = event.target.value;
+        }
+        console.log("Gamemode: ", gamemode);
+    },
+    setNoteSet(event){
+        if(event.target.getAttribute('name') === 'note-set') {
+            noteSet = event.target.value;
+        }
+        console.log("NoteSet: ", noteSet);
+    },
     setNumberOfFrets() {
         numberOfFrets = numberOfFretsSelector.value;
         app.setupFretboard();
@@ -219,6 +228,15 @@ const handlers = {
         clickedNote = enumeratedNotes.get(clickedNote);
         console.log(clickedNote);
     },
+    promptQuestion(event) {
+        if(event.code != "Space") return;
+        if(gamemode === 'fret') {
+            // code for fret game
+        }
+        else if(gamemode === 'note') {
+            // code for note game
+        }
+    },
     setupEventListeners() {
         fretboard.addEventListener('mouseover', this.showNoteDot);
         fretboard.addEventListener('mouseout', this.hideNoteDot);
@@ -226,7 +244,10 @@ const handlers = {
         instrumentSelector.addEventListener('change', this.setSelectedInstrument);
         accidentalSelector.addEventListener('click', this.setAccidentals);
         numberOfFretsSelector.addEventListener('change', this.setNumberOfFrets);
+        noteSetSelector.addEventListener('click', this.setNoteSet);
+        gamemodeSelector.addEventListener('click', this.setGamemode);
         noteNameSection.addEventListener('click', this.testCorrectNote);
+        document.addEventListener('keydown', this.promptQuestion);
     }
 }
 
