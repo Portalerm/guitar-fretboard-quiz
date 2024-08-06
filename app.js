@@ -57,6 +57,8 @@ const app = {
         for (let i = 0; i < numberOfStrings; i++) {
             let string = tools.createElement('div');
             string.classList.add('string');
+            let stringName = this.generateNoteNames(instrumentTuningPresets[selectedInstrument][i], accidentals);
+            string.setAttribute('data-name', stringName);
             fretboard.appendChild(string);
          
             // Create frets
@@ -210,10 +212,18 @@ const handlers = {
         }
     },
     testCorrectLocation(event) {
-        // Needs to be worked on
+        if(!gameState.inPlay) return;
         let clickedNote = event.target.getAttribute('data-note');
         clickedNote = enumeratedNotes.get(clickedNote);
-        console.log(clickedNote);
+        let expectedNote = enumeratedNotes.get(gameState.selectedNote);
+        let clickedString = event.target.parentNode.getAttribute('data-name');
+        if(clickedString === null) return;
+        if(clickedNote === expectedNote && clickedString === gameState.selectedString) {
+            gamePrompt.innerText = "Congrats! You got it right!\nPress [space] to continue";
+        }
+        else {
+            gamePrompt.innerText = "You got it wrong!\nPress [space] to continue";
+        }
 
     },
     testCorrectNote(event) {
@@ -248,9 +258,7 @@ const handlers = {
                 gameState.selectedNote = Math.floor(Math.random() * notesFlat.length);
                 gameState.selectedNote = app.generateNoteNames(gameState.selectedNote, accidentals);
             }
-
             gamePrompt.innerText = `Where is ${gameState.selectedNote} on the ${gameState.selectedString} string?`;
-
         }
         else if(gamemode === 'note') {
             // code for note game
