@@ -126,6 +126,7 @@ const app = {
             checkBox.setAttribute('type', 'checkbox');
             checkBox.setAttribute('id', `string-select-${stringName}`);
             checkBox.setAttribute('value', stringName);
+            checkBox.setAttribute('checked', '');
             stringSelector.appendChild(checkBox);
         }
 
