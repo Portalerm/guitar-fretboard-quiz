@@ -148,7 +148,6 @@ const handlers = {
         }
     },
     hideNoteDot(event) {
-        if(event.target.classList.contains('note-fret-pink')) return;
         event.target.style.setProperty('--noteDotOpacity', 0);   
     },
     setSelectedInstrument(event) {
@@ -198,11 +197,9 @@ const handlers = {
         }
         else {
             gamePrompt.innerText = "You got it wrong!\nPress [space] to continue";
-            // show the correct noteDot
-            // root.style.setProperty('--noteDotColor', '#bd09ae');
-            // this changes all of them tho
             let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedString}"]`);
             displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
+            console.log(displayFret);
             displayFret.classList.add('note-fret-pink');
         }
 

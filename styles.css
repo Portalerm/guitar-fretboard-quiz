@@ -102,7 +102,7 @@ label {
 }
 .note-fret-pink {
     --noteDotColor: #bd09ae;
-    --noteDotOpacity: 1;
+    --noteDotOpacity: 1 !important;
 }
 .note-fret:first-child {
     background: #161717;
