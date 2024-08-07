@@ -9,6 +9,7 @@
     --double-fretmark-position-1: calc(var(--fretboard-height) * 0.25);
     --double-fretmark-position-2: calc(var(--fretboard-height) * 0.75);
     --noteDotOpacity: 0;
+    --noteDotColor: teal;
 }
 
 * {
@@ -62,6 +63,7 @@ label {
     color: #fff;
     align-items: center;
     margin-top: 25px;
+    height: 75px;
 }
 .fretboard {
     display: flex;
@@ -98,6 +100,10 @@ label {
     align-items: center;
     position: relative;
 }
+.note-fret-pink {
+    --noteDotColor: #bd09ae;
+    --noteDotOpacity: 1;
+}
 .note-fret:first-child {
     background: #161717;
     min-width: 76px;
@@ -107,14 +113,13 @@ label {
     border-image: linear-gradient(to left, #bbb, #fff, #bbb) 1 100%;
 }
 .note-fret:before {
-    /* content: attr(data-note); */
     content: '';
     width: 33px;
     height: 33px;
     border-radius: 50%;
     line-height: 33px;
     text-align:  center;
-    background: teal;
+    background: var(--noteDotColor);
     z-index: 2;
     color: #eee;
     opacity: var(--noteDotOpacity);

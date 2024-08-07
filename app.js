@@ -28,8 +28,6 @@ const instrumentTuningPresets = {
     'Ukulele': [9, 4, 0, 7]
 };
 let allNotes;
-let showMultipleNotes = false;
-let showAllNotes = false;
 let numberOfFrets = 12;
 let accidentals = 'flats';
 let selectedInstrument = 'Guitar';
@@ -139,34 +137,19 @@ const app = {
             stringSelector.appendChild(checkBox);
         }
 
-
     }
 }
 
 const handlers = {
     showNoteDot(event) {
         // Check if show all notes is selected
-        if (showAllNotes) {
-            return;
-        }
         if (event.target.classList.contains('note-fret')) {
-            if (showMultipleNotes) {
-                app.toggleMultipleNotes(event.target.dataset.note, 1);
-            } else {
-                event.target.style.setProperty('--noteDotOpacity', 1);
-            }
+            event.target.style.setProperty('--noteDotOpacity', 1);
         }
     },
     hideNoteDot(event) {
-        if (showAllNotes) {
-            return;
-        }
-        if (showMultipleNotes) {
-            app.toggleMultipleNotes(event.target.dataset.note, 0);
-        } else {
-            event.target.style.setProperty('--noteDotOpacity', 0);
-        }
-        
+        if(event.target.classList.contains('note-fret-pink')) return;
+        event.target.style.setProperty('--noteDotOpacity', 0);   
     },
     setSelectedInstrument(event) {
         selectedInstrument = event.target.value;
@@ -203,26 +186,24 @@ const handlers = {
         let noteToShow = event.target.innerText;
         app.toggleMultipleNotes(noteToShow, 1);
     },
-    setNotesToHide(event) {
-        if (!showAllNotes) {
-            let noteToHide = event.target.innerText;
-            app.toggleMultipleNotes(noteToHide, 0);
-        } else {
-            return;
-        }
-    },
     testCorrectLocation(event) {
         if(!gameState.inPlay) return;
+        if(!event.target.classList.contains('note-fret')) return;
         let clickedNote = event.target.getAttribute('data-note');
         clickedNote = enumeratedNotes.get(clickedNote);
         let expectedNote = enumeratedNotes.get(gameState.selectedNote);
         let clickedString = event.target.parentNode.getAttribute('data-name');
-        if(clickedString === null) return;
         if(clickedNote === expectedNote && clickedString === gameState.selectedString) {
             gamePrompt.innerText = "Congrats! You got it right!\nPress [space] to continue";
         }
         else {
             gamePrompt.innerText = "You got it wrong!\nPress [space] to continue";
+            // show the correct noteDot
+            // root.style.setProperty('--noteDotColor', '#bd09ae');
+            // this changes all of them tho
+            let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedString}"]`);
+            displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
+            displayFret.classList.add('note-fret-pink');
         }
 
     },
@@ -234,6 +215,10 @@ const handlers = {
     },
     promptQuestion(event) {
         if(event.code != "Space") return;
+        // set all the noteDots to be invisible from the previous round
+        let noteDots = fretboard.querySelectorAll('.note-fret');
+        for(let i = 0; i < noteDots.length; ++i)
+            noteDots[i].classList.remove('note-fret-pink');
         gameState.inPlay = true;
         if(gamemode === 'fret') {
             // get the current valid strings we can choose from and select a random string
@@ -247,7 +232,6 @@ const handlers = {
                 gamePrompt.innerText = 'You must have at least 1 string selected';
                 return; 
             }
-
             // select a random note
             // if the gamemode is set to naturals only, make sure it's only naturals
             let selectedNote = '';
