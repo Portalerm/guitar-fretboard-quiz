@@ -1,8 +1,12 @@
-# Interactive Fretboard
+# Fretboard Quiz
 
-Repo for an interactive fretboard tutorial I did on Youtube. 
+Repo for an interactive guitar fretboard quiz
 
-You can try it out here: https://musicandcode.github.io/interactive-fretboard/
+Use it to practice your fretboard knowledge
 
-Check it out on my [Youtube channel Music and Coding](https://www.youtube.com/watch?v=geRBqZjBgQs&list=PLXAhCH9FJ8zViqdqhsSP7iyCrVDoUGb3P)
+There are two main gamemodes: 
 
+1. Guess fret: You are given a note and must click on the correct fret on the correct string
+2. Guess Note: You are given a location on the fretboard and must guess the correct note using the note selection on the bottom.
+
+Forked from https://github.com/musicandcode/interactive-fretboard 
