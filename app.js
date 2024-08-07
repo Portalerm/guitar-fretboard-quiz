@@ -169,7 +169,7 @@
             if(event.target.getAttribute('name') === 'gamemode') {
                 gamemode = event.target.value;
             }
-            console.log("Gamemode: ", gamemode);
+            handlers.promptQuestion(event);
         },
         setNoteSet(event){
             if(event.target.getAttribute('name') === 'note-set') {
