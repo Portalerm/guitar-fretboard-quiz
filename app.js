@@ -186,6 +186,7 @@
             app.toggleMultipleNotes(noteToShow, 1);
         },
         testCorrectLocation(event) {
+            if(gamemode === 'note') return;
             if(!gameState.inPlay) return;
             if(!event.target.classList.contains('note-fret')) return;
             let clickedNote = event.target.getAttribute('data-note');
@@ -204,7 +205,8 @@
     
         },
         testCorrectNote(event) {
-            // Needs to be worked on
+            if(gamemode === 'fret') return;
+            if(!gameState.inPlay) return;
             let clickedNote = event.target.innerText;
             clickedNote = enumeratedNotes.get(clickedNote);
             let expectedNote = enumeratedNotes.get(gameState.selectedNote);
