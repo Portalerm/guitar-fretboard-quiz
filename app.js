@@ -36,7 +36,8 @@
     let noteSet = 'naturals';
     let gameState = {
         inPlay : false,
-        selectedString : '',
+        selectedStringName : '',
+        selectedStringNum : '',
         selectedNote : '',
     }
     
@@ -57,6 +58,7 @@
                 string.classList.add('string');
                 let stringName = this.generateNoteNames(instrumentTuningPresets[selectedInstrument][i], accidentals);
                 string.setAttribute('data-name', stringName);
+                string.setAttribute('id', `string-${i}`);
                 fretboard.appendChild(string);
              
                 // Create frets
@@ -127,11 +129,11 @@
             for(let i = 0; i < strings.length; ++i) {
                 let stringName = this.generateNoteNames(strings[i], accidentals);
                 let label = tools.createElement('label', stringName);
-                label.setAttribute('for', `string-select-${stringName}`);
+                label.setAttribute('for', `string-select-${strings.length - i - 1}`);
                 stringSelector.appendChild(label);
                 let checkBox = tools.createElement('input');
                 checkBox.setAttribute('type', 'checkbox');
-                checkBox.setAttribute('id', `string-select-${stringName}`);
+                checkBox.setAttribute('id', `string-select-${strings.length - i - 1}`);
                 checkBox.setAttribute('value', stringName);
                 checkBox.setAttribute('checked', '');
                 stringSelector.appendChild(checkBox);
@@ -193,12 +195,12 @@
             clickedNote = enumeratedNotes.get(clickedNote);
             let expectedNote = enumeratedNotes.get(gameState.selectedNote);
             let clickedString = event.target.parentNode.getAttribute('data-name');
-            if(clickedNote === expectedNote && clickedString === gameState.selectedString) {
+            if(clickedNote === expectedNote && clickedString === gameState.selectedStringName) {
                 gamePrompt.innerText = "Congrats! You got it right!\nPress [space] to continue";
             }
             else {
                 gamePrompt.innerText = "You got it wrong!\nPress [space] to continue";
-                let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedString}"]`);
+                let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedStringName}"]`);
                 displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
                 displayFret.classList.add('note-fret-pink');
             }
@@ -229,10 +231,12 @@
             // get the current valid strings we can choose from and select a random string
             let stringSelection = Array.from(stringSelector.querySelectorAll('input'));
             stringSelection = stringSelection.filter((box) => box.checked);
-            stringSelection = stringSelection.map((box) => box.value);
-            gameState.selectedString = stringSelection[Math.floor(Math.random() * stringSelection.length)];
+            stringSelection = stringSelection[Math.floor(Math.random() * stringSelection.length)];
+            gameState.selectedStringName = stringSelection.value;
+            gameState.selectedStringNum = stringSelection.getAttribute('id');
+            gameState.selectedStringNum = gameState.selectedStringNum[gameState.selectedStringNum.length - 1];
 
-            if(gameState.selectedString === undefined) {
+            if(gameState.selectedStringName === undefined) {
                 gameState.inPlay = false;
                 gamePrompt.innerText = 'You must have at least 1 string selected';
                 return; 
@@ -248,10 +252,10 @@
                 gameState.selectedNote = app.generateNoteNames(gameState.selectedNote, accidentals);
             }
             if(gamemode === 'fret') {
-                gamePrompt.innerText = `Where is ${gameState.selectedNote} on the ${gameState.selectedString} string?`;
+                gamePrompt.innerText = `Where is ${gameState.selectedNote} on the ${gameState.selectedStringName} string?`;
             }
             else if(gamemode === 'note') {
-                let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedString}"]`);
+                let displayFret = fretboard.querySelector(`#string-${gameState.selectedStringNum}`);
                 displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
                 displayFret.classList.add('note-fret-pink');
                 gamePrompt.innerText = `What note does the selected fret produce?`;
