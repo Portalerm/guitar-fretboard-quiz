@@ -244,13 +244,16 @@
             }
             // select a random note
             // if the gamemode is set to naturals only, make sure it's only naturals
-            let selectedNote = '';
-            if(noteSet === 'naturals') {
-                gameState.selectedNote = notesNatural[Math.floor(Math.random() * notesNatural.length)];
-            }
-            else if (noteSet === 'chromatic') {
-                gameState.selectedNote = Math.floor(Math.random() * notesFlat.length);
-                gameState.selectedNote = app.generateNoteNames(gameState.selectedNote, accidentals);
+            // keep randomly generating notes until it actually fits on the fretboard
+            while(!fretboard.querySelector(`#string-${gameState.selectedStringNum}`).querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`)) {
+                gameState.selectedNote = '';
+                if(noteSet === 'naturals') {
+                    gameState.selectedNote = notesNatural[Math.floor(Math.random() * notesNatural.length)];
+                }
+                else if (noteSet === 'chromatic') {
+                    gameState.selectedNote = Math.floor(Math.random() * notesFlat.length);
+                    gameState.selectedNote = app.generateNoteNames(gameState.selectedNote, accidentals);
+                }
             }
             if(gamemode === 'fret') {
                 gamePrompt.innerText = `Where is ${gameState.selectedNote} on the ${gameState.selectedStringName} string?`;
