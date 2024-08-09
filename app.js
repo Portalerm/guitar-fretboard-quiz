@@ -157,6 +157,7 @@
             numberOfStrings = instrumentTuningPresets[selectedInstrument].length;
             app.setupFretboard();
             app.setupStringSelection();
+            handlers.promptQuestion(event);
         },
         setAccidentals(event) {
             if (event.target.classList.contains('acc-select')) {
