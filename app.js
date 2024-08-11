@@ -196,14 +196,14 @@
             clickedNote = enumeratedNotes.get(clickedNote);
             let expectedNote = enumeratedNotes.get(gameState.selectedNote);
             let clickedString = event.target.parentNode.getAttribute('data-name');
+            let displayFret = fretboard.querySelector(`#string-${gameState.selectedStringNum}`);
+            displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
+            displayFret.classList.add('note-fret-pink');
             if(clickedNote === expectedNote && clickedString === gameState.selectedStringName) {
                 gamePrompt.innerText = "Congrats! You got it right!\nPress [space] to continue";
             }
             else {
                 gamePrompt.innerText = "You got it wrong!\nPress [space] to continue";
-                let displayFret = fretboard.querySelector(`.string[data-name="${gameState.selectedStringName}"]`);
-                displayFret = displayFret.querySelector(`.note-fret[data-note="${gameState.selectedNote}"]`);
-                displayFret.classList.add('note-fret-pink');
             }
     
         },
